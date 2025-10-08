@@ -3,6 +3,9 @@ using NAudio.Wave;
 
 namespace Console_Portfolio
 {
+    /// <summary>
+    /// 효과음, 브금 재생 관리 클래스
+    /// </summary>
     public class SoundManager : Singleton<SoundManager>
     {
         private readonly string audioFilePath;  //사운드 파일 경로
