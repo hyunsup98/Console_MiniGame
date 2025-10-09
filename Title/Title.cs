@@ -25,6 +25,7 @@ namespace Console_Portfolio
         #region 타이틀 관리
         private void TitleScreen()
         {
+            Console.Clear();
             Console.CursorVisible = false;
 
             #region 메인화면 아웃라인(테두리)

@@ -82,8 +82,6 @@
     <Compile Include="Pattern\Singleton.cs" />
     <Compile Include="Manager\SoundManager.cs" />
     <Compile Include="Title\Title.cs" />
-    <Compile Include="Village\Building.cs" />
-    <Compile Include="Village\Village.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

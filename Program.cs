@@ -92,18 +92,10 @@ namespace Console_Portfolio
                     }
                 }
 
-                //게임 상태가 마을일때
+                //게임 상태가 인게임일 때
                 if (GameManager.Instance.CurrentGameState == GameState.InGame)
                 {
-                    if(Console.KeyAvailable)
-                    {
-                        var key = Console.ReadKey(true);
-
-                        if(key.Key == ConsoleKey.R)
-                        {
-                            yacht.Reroll_Dice();
-                        }
-                    }
+                    yacht.YachtGame();
                 }
             }
         }

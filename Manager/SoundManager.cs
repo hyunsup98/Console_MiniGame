@@ -25,22 +25,6 @@ namespace Console_Portfolio
             isRegisterEvent = false;
         }
 
-        //사운드 재생: 1회성
-        public void Play(string fileName, float volume)
-        {
-            //audioFile과 outputDevice가 이미 있으면 해제 먼저 하기 → 예외처리 방지
-            if(audioFile != null || outputDevice != null) Dispose();
-
-            string path = audioFilePath + fileName;
-
-            audioFile = new AudioFileReader(path);
-            audioFile.Volume = volume;
-            outputDevice = new WaveOutEvent();
-
-            outputDevice.Init(audioFile);
-            outputDevice.Play();
-        }
-
         //사운드 재생: 반복
         public void PlayLoop(string fileName, float volume)
         {

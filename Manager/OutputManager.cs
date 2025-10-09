@@ -20,23 +20,53 @@ namespace Console_Portfolio
         {
             if (string.IsNullOrEmpty(str)) return;
 
-            var strHalfLength = (Console.WindowWidth / 2) - (str.Length / 2); //콘솔창 절반 길이 - 문자열 절반 길이 = 문자열이 중앙에 출력됨
+            var strHalfLength = (Console.WindowWidth / 2) - (StringCount(str) / 2); //콘솔창 절반 길이 - 문자열 절반 길이 = 문자열이 중앙에 출력됨
 
             Console.SetCursorPosition(strHalfLength, height);
             Console.Write(str);
         }
 
+        /// <summary>
+        /// 인자로 받은 문자열 배열을 콘솔 중앙에 출력하는 확장 메서드
+        /// </summary>
+        /// <param name="strs"> 출력할 문자열 배열 </param>
+        /// <param name="height"> 높이: 몇 번째 줄에 출력될지 </param>
         public static void WriteMiddle(this string[] strs, int height)
         {
             if (strs.Length == 0) return;
 
             for(int i = 0; i < strs.Length; i++)
             {
-                var strHalfLength = (Console.WindowWidth / 2) - (strs[i].Length / 2);
+                var strHalfLength = (Console.WindowWidth / 2) - (StringCount(strs[i]) / 2);
 
                 Console.SetCursorPosition(strHalfLength, height + i);
                 Console.Write(strs[i]);
             }
+        }
+
+        /// <summary>
+        /// 인자로 받은 문자열의 길이를 반환하는 메서드
+        /// 영어는 1칸, 한글이나 특수문자는 2칸으로 계산하여 반환
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static int StringCount(string str)
+        {
+            int count = 0;
+
+            foreach(var c in str)
+            {
+                if(char.GetUnicodeCategory(c) == System.Globalization.UnicodeCategory.OtherLetter)
+                {
+                    count += 2;
+                }
+                else
+                {
+                    count += 1;
+                }
+            }
+
+            return count;
         }
 
         /// <summary>
@@ -46,6 +76,8 @@ namespace Console_Portfolio
         {
             //문자를 한 번에 제출하기 위해 StringBuilder에 저장 후 출력
             //문자열이 계속 수정되기 때문에 StringBuilder 사용
+
+            sb.Clear();
 
             for (int i = 0; i < Console.WindowHeight - 1; i++)
             {
@@ -85,6 +117,13 @@ namespace Console_Portfolio
             }
 
             Console.Write(sb);
+        }
+
+        public static void WriteColor(string str, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.Write(str);
+            Console.ResetColor();
         }
 
         /// <summary>

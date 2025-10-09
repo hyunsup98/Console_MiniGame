@@ -19,6 +19,31 @@ namespace Console_Portfolio.Game.Yacht
             }
         }
 
-        public bool isSelected { get; set; }    //true면 선택된거라 리롤시 돌리지 않음
+        private bool isSelected;    //true면 선택된거라 리롤시 돌리지 않음
+        public bool IsSelected
+        {
+            get { return isSelected; }
+            set
+            {
+                if(value == true)
+                    Console.ForegroundColor = ConsoleColor.Red;
+                else
+                    Console.ForegroundColor = ConsoleColor.Green;
+
+                isSelected = value;
+                Console.SetCursorPosition(numberPosX, numberPosY);
+                Console.Write(number);
+                Console.ResetColor();
+            }
+        }
+
+        public int numberPosX { get; set; }     //주사위 숫자가 보여질 console.setcursorposition X 좌표, 선택 시 빨간색으로 덮어주기 위함
+        public int numberPosY { get; set; }     //주사위 숫자가 보여질 console.setcursorposition Y 좌표
+
+        //점수를 넣고 나서 주사위 초기화
+        public void DiceInit()
+        {
+            isSelected = false;
+        }
     }
 }
