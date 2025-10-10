@@ -27,6 +27,7 @@ namespace Console_Portfolio
         {
             Console.Clear();
             Console.CursorVisible = false;
+            SoundManager.Instance.PlayLoop("ChillLofiR.mp3", 0.7f);
 
             #region 메인화면 아웃라인(테두리)
 

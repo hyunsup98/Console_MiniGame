@@ -11,65 +11,6 @@ namespace Console_Portfolio.Game.Yacht
         GameOver
     }
 
-    /// <summary>
-    /// 각각의 스코어를 저장할 클래스
-    /// 플레이어가 0점을 기록한 것과, 아무것도 기록하지 않은 상태를 구분하기 위해 nullable 사용
-    /// </summary>
-    public class YachtScoreBoard
-    {
-        public int? ones = null;
-        public int? twos = null;
-        public int? threes = null;
-        public int? fours = null;
-        public int? fives = null;
-        public int? sixes = null;
-
-        public int? threeOfAKind = null;
-        public int? fourOfAKind = null;
-        public int? fullHouse = null;
-        public int? smallStraight = null;
-        public int? largeStraight = null;
-        public int? yahtzee = null;
-        public int? chance = null;
-
-        //점수 초기화
-        public void YachtScoreInit()
-        {
-            ones = null;
-            twos = null;
-            threes = null;
-            fours = null;
-            fives = null;
-            sixes = null;
-
-            threeOfAKind = null;
-            fourOfAKind = null;
-            fullHouse = null;
-            smallStraight = null;
-            largeStraight = null;
-            yahtzee = null;
-            chance = null;
-        }
-
-        //보너스 점수 계산 및 반환
-        public int GetBonusScore()
-        {
-            var sum = (ones ?? 0) + (twos ?? 0) + (threes ?? 0) + (fours ?? 0) + (fives ?? 0) + (sixes ?? 0);
-
-            return sum >= 63 ? 35 : 0;
-        }
-
-        //총합을 계산 및 반환
-        public int GetSumScore()
-        {
-            var sum = (ones ?? 0) + (twos ?? 0) + (threes ?? 0) + (fours ?? 0) + (fives ?? 0) + (sixes ?? 0) + (threeOfAKind ?? 0) + (fourOfAKind ?? 0) +
-                (fullHouse ?? 0) + (smallStraight ?? 0) + (largeStraight ?? 0) + (yahtzee ?? 0) + (chance ?? 0) + GetBonusScore();
-
-            return sum;
-        }
-    }
-
-
     public class Game_Yacht
     {
         private const int DICE_COUNT = 5;       //주사위 개수 (기본 5개)
@@ -85,7 +26,7 @@ namespace Console_Portfolio.Game.Yacht
                 if (value < 0)
                     value = 0;
                 else if (value >= MAXTURN)
-                    yachtState = Yacht_State.GameOver;
+                    GameOver();
 
                 currentTurn = value;
             }
@@ -235,6 +176,7 @@ namespace Console_Portfolio.Game.Yacht
                         {
                             case ConsoleKey.R:
                                 RerollCount--;
+                                SoundManager.Instance.PlayEffect("Abstract1.mp3", 0.7f);
                                 break;
 
                             case ConsoleKey.D1:
@@ -268,11 +210,6 @@ namespace Console_Portfolio.Game.Yacht
                             case ConsoleKey.Enter:
                                 AddScore();
                                 break;
-
-                            case ConsoleKey.F:
-                                GameOver();
-                                yachtState = Yacht_State.GameOver;
-                                break;
                         }
                     }
                 }
@@ -282,8 +219,6 @@ namespace Console_Portfolio.Game.Yacht
                 {
                     if (Console.KeyAvailable)
                     {
-                        GameOver();
-
                         var key = Console.ReadKey(true);
 
                         switch (key.Key)
@@ -323,6 +258,7 @@ namespace Console_Portfolio.Game.Yacht
             var textScoreBoard = "점수판";
             Console.SetCursorPosition(boardPosX + (21 - OutputManager.StringCount(textScoreBoard) / 2), boardPosY - 2);
             OutputManager.WriteColor(textScoreBoard, ConsoleColor.Green);
+            Console.Write($" 현재 턴 {CurrentTurn + 1}/{MAXTURN}");
 
             //점수판 테두리 그리기
             for (int i = 0; i < row; i++)
@@ -599,7 +535,7 @@ namespace Console_Portfolio.Game.Yacht
                         //야찌 점수를 먹었을 경우 50점 추가 + 한 턴 더 하기 / 0점이 들어가있으면 그냥 못넣음
                         player.yahtzee += 50;
                         SoundManager.Instance.PlayEffect("Modern1.mp3", 0.5f);
-                        NextTurn(true);
+                        NextTurn(isP1Turn);
                         return;
                     }
                     else
@@ -612,6 +548,7 @@ namespace Console_Portfolio.Game.Yacht
                 {
                     //야찌 족보에 값이 없으면
                     player.yahtzee = ScoreYahtzee(counts);
+                    SoundManager.Instance.PlayEffect("Modern1.mp3", 0.5f);
                 }
             }
 
@@ -626,6 +563,8 @@ namespace Console_Portfolio.Game.Yacht
         {
             if (this.isP1Turn == false && isP1Turn == true)
                 CurrentTurn++;
+
+            if (yachtState == Yacht_State.GameOver) return;
 
             foreach (var dice in dices)
             {
@@ -675,6 +614,8 @@ namespace Console_Portfolio.Game.Yacht
             OutputManager.WriteMiddle($"플레이어 1 점수: {p1Score}", 23);
             OutputManager.WriteMiddle($"플레이어 2 점수: {p2Score}", 25);
             OutputManager.WriteMiddle($"1: 타이틀 화면으로 돌아가기   2: 재시작하기", 30);
+
+            yachtState = Yacht_State.GameOver;
         }
 
         //플레이어의 해당 족보 점수 변수에 값이 있으면 패스, 없으면 점수를 넣어주는 메서드

@@ -53,8 +53,6 @@ namespace Console_Portfolio
             time.Start();       //프레임 재생 시작
             time2.Start();
 
-            SoundManager.Instance.PlayLoop("ChillLofiR.mp3", 0.7f);
-
             #region 외부 클래스들 Start 메서드 및 초기화
 
             GameManager.Instance.Start();

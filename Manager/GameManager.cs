@@ -10,8 +10,6 @@ namespace Console_Portfolio
     {
         Title,          //게임을 시작할 때 나오는 메인메뉴 화면 (최초 실행 한 번만 볼 수 있음)
         InGame,         //각각의 미니게임을 플레이할 때 상태
-        Pause,          //미니게임 플레이 중 잠깐 일시정지한 상태
-        GameOver        //미니게임 종료
     }
 
     /// <summary>
@@ -43,14 +41,6 @@ namespace Console_Portfolio
                     case GameState.InGame:
                         action_StateInGame?.Invoke();
                         break;
-
-                    case GameState.Pause:
-
-                        break;
-
-                    case GameState.GameOver:
-
-                        break;
                 }
             }
         }
@@ -61,6 +51,8 @@ namespace Console_Portfolio
         {
             currentGameState = GameState.Title;
             action_StateTitle?.Invoke();
+
+            action_StateInGame += SoundManager.Instance.Dispose;
 
             Console.OutputEncoding = Encoding.UTF8;
         }

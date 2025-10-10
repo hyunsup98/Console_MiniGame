@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="Game\Yacht\Dice.cs" />
     <Compile Include="Game\Yacht\Game_Yacht.cs" />
+    <Compile Include="Game\Yacht\YachtScoreBoard.cs" />
     <Compile Include="Manager\GameManager.cs" />
     <Compile Include="Manager\OutputManager.cs" />
     <Compile Include="Program.cs" />
